@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>详细说明 - 水獭的作品集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A6FA5',
+                        secondary: '#E07A5F',
+                        accent: '#F4F1DE',
+                        dark: '#3D405B',
+                        light: '#F2CC8F'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            .image-container {
+                position: relative;
+                overflow: hidden;
+                transition: transform 0.5s;
+            }
+            .image-container:hover {
+                transform: translateY(-10px);
+            }
+            .scale-up {
+                transform: scale(1.05);
+            }
+            .grid-masonry {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                grid-gap: 1.5rem;
+                grid-auto-flow: dense;
+            }
+            .grid-masonry .wide {
+                grid-column: span 2;
+            }
+            .grid-masonry .tall {
+                grid-row: span 2;
+            }
+            .grid-masonry .big {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+            .fade-in {
+                animation: fadeIn 0.8s ease-in-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark text-accent font-sans min-h-screen flex flex-col">
+    <!-- 导航栏 -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="../index.html" class="text-2xl font-bold flex items-center space-x-2">
+                <span class="text-secondary"><i class="fa fa-paint-brush"></i></span>
+                <span>水獭的作品集</span>
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="../index.html#home" class="nav-link text-accent hover:text-secondary transition-colors">首页</a>
+                <a href="../index.html#gallery" class="nav-link text-accent hover:text-secondary transition-colors">作品分类</a>
+                <a href="../index.html#about" class="nav-link text-accent hover:text-secondary transition-colors">关于作者</a>
+                <a href="../index.html#contact" class="nav-link text-accent hover:text-secondary transition-colors">联系方式</a>
+            </nav>
+            <button class="md:hidden text-accent text-xl" id="menuToggle">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-dark/95 backdrop-blur-md absolute w-full" id="mobileMenu">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="../index.html#home" class="text-accent hover:text-secondary py-2 border-b border-accent/20">首页</a>
+                <a href="../index.html#gallery" class="text-accent hover:text-secondary py-2 border-b border-accent/20">作品分类</a>
+                <a href="../index.html#about" class="text-accent hover:text-secondary py-2 border-b border-accent/20">关于作者</a>
+                <a href="../index.html#contact" class="text-accent hover:text-secondary py-2">联系方式</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow pt-16">
+        <!-- 分类标题 -->
+        <section class="relative py-20 bg-gradient-to-b from-dark to-dark/95">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-4">详细说明</h1>
+                    <p class="text-accent/70 max-w-2xl mx-auto">深入细致的艺术创作，展现丰富细节和精湛技巧</p>
+                    <div class="mt-8 flex justify-center space-x-4">
+                        <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                            <i class="fa fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 筛选器 -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <button class="bg-secondary hover:bg-secondary/80 text-dark font-bold py-2 px-6 rounded-full transition-all">
+                        全部作品
+                    </button>
+                    <button class="bg-primary/30 hover:bg-primary/50 text-accent font-bold py-2 px-6 rounded-full transition-all">
+                        角色设计
+                    </button>
+                    <button class="bg-primary/30 hover:bg-primary/50 text-accent font-bold py-2 px-6 rounded-full transition-all">
+                        场景设计
+                    </button>
+                    <button class="bg-primary/30 hover:bg-primary/50 text-accent font-bold py-2 px-6 rounded-full transition-all">
+                        概念艺术
+                    </button>
+                </div>
+
+                <!-- 作品网格 -->
+                <div class="grid-masonry" id="gallery-grid">
+                    <!-- 作品项 1 -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1039/800/1000" alt="森林精灵" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="这幅作品展现了一位森林精灵的形象，细节丰富，包括精致的服装纹理和自然元素的融合。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">森林精灵</h3>
+                                    <p class="text-accent/80 mt-2">数字绘画 · 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 作品项 2 -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1074/800/600" alt="深海传说" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="描绘了深海中的神秘生物，展现了海底世界的奇妙与神秘，光影效果处理细腻。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">深海传说</h3>
+                                    <p class="text-accent/80 mt-2">数字绘画 · 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 作品项 3 (宽) -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl wide">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1062/1200/600" alt="古城探险" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="展现了一座神秘古城的全景，包含丰富的建筑细节和环境氛围，人物与场景的比例协调。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">古城探险</h3>
+                                    <p class="text-accent/80 mt-2">概念设计 · 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 作品项 4 (高) -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl tall">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1059/800/1200" alt="暗夜女巫" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="刻画了一位神秘的女巫形象，服装和配饰细节丰富，背景的魔法效果增强了整体氛围。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">暗夜女巫</h3>
+                                    <p class="text-accent/80 mt-2">角色设计 · 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 作品项 5 -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1083/800/600" alt="机械之心" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="融合了机械与生物元素的创意设计，展现了独特的视觉风格和丰富的细节层次。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">机械之心</h3>
+                                    <p class="text-accent/80 mt-2">概念艺术 · 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 作品项 6 (大) -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl big">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1060/1200/1200" alt="龙与骑士" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="一幅大型场景作品，展现了龙与骑士的史诗对决，包含丰富的动作细节和戏剧性的光影效果。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">龙与骑士</h3>
+                                    <p class="text-accent/80 mt-2">场景设计 · 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 作品项 7 -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1071/800/600" alt="蒸汽朋克城市" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="蒸汽朋克风格的城市景观，展现了齿轮、管道和机械装置的复杂结构，细节丰富且具有独特的视觉风格。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">蒸汽朋克城市</h3>
+                                    <p class="text-accent/80 mt-2">环境设计 · 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 作品项 8 -->
+                    <div class="image-container group bg-primary/20 rounded-xl overflow-hidden shadow-xl">
+                        <div class="relative overflow-hidden">
+                            <img src="https://picsum.photos/id/1039/800/1000" alt="花之精灵" class="gallery-image w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-description="以花朵为主题的精灵角色设计，融合了自然元素与幻想风格，色彩柔和且细节精致。">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold text-accent">花之精灵</h3>
+                                    <p class="text-accent/80 mt-2">角色设计 · 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 加载更多按钮 -->
+                <div class="text-center mt-16">
+                    <button class="bg-primary/30 hover:bg-primary/50 text-accent font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-lg">
+                        加载更多作品
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark/70 backdrop-blur-md py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="../index.html" class="text-2xl font-bold flex items-center space-x-2">
+                        <span class="text-secondary"><i class="fa fa-paint-brush"></i></span>
+                        <span>水獭的作品集</span>
+                    </a>
+                    <p class="text-accent/60 mt-2">© 2025 水獭. 保留所有权利</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                        <i class="fa fa-behance"></i>
+                    </a>
+                    <a href="#" class="text-accent/60 hover:text-secondary transition-colors">
+                        <i class="fa fa-pinterest"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 图片查看器模态框 -->
+    <div id="imageViewer" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center">
+        <button id="closeViewer" class="absolute top-6 right-6 text-accent text-3xl hover:text-secondary transition-colors">
+            <i class="fa fa-times"></i>
+        </button>
+        <div class="container mx-auto px-4 max-w-5xl">
+            <img id="viewedImage" src="" alt="查看的图片" class="max-h-[80vh] mx-auto">
+            <div class="mt-4 text-center">
+                <h3 id="imageTitle" class="text-2xl font-bold text-accent"></h3>
+                <p id="imageDescription" class="text-accent/70 mt-2"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-dark/90', 'backdrop-blur-md', 'shadow-lg');
+                navbar.classList.remove('py-3');
+                navbar.classList.add('py-2');
+            } else {
+                navbar.classList.remove('bg-dark/90', 'backdrop-blur-md', 'shadow-lg');
+                navbar.classList.remove('py-2');
+                navbar.classList.add('py-3');
+            }
+        });
+
+        // 移动端菜单切换
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuToggle.innerHTML = '<i class="fa fa-bars"></i>';
+            } else {
+                menuToggle.innerHTML = '<i class="fa fa-times"></i>';
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    // 关闭移动端菜单
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        menuToggle.innerHTML = '<i class="fa fa-bars"></i>';
+                    }
+                }
+            });
+        });
+
+        // 图片查看器
+        const imageViewer = document.getElementById('imageViewer');
+        const closeViewer = document.getElementById('closeViewer');
+        const viewedImage = document.getElementById('viewedImage');
+        const imageTitle = document.getElementById('imageTitle');
+        const imageDescription = document.getElementById('imageDescription');
+
+        function openImageViewer(imgElement) {
+            const imgSrc = imgElement.getAttribute('src');
+            const imgAlt = imgElement.getAttribute('alt');
+            const imgDesc = imgElement.getAttribute('data-description') || '';
+            
+            viewedImage.setAttribute('src', imgSrc);
+            imageTitle.textContent = imgAlt;
+            imageDescription.textContent = imgDesc;
+            
+            imageViewer.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        closeViewer.addEventListener('click', () => {
+            imageViewer.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // 为所有画廊图片添加点击事件
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryImages = document.querySelectorAll('.gallery-image');
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => openImageViewer(img));
+            });
+        });
+
+        // 滚动动画
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.image-container');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('fade-in');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
+    
