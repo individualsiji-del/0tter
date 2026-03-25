@@ -590,6 +590,52 @@
       border: 1px solid rgba(242, 239, 232, 0.15);
     }
 
+    .msg.thinking {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      width: fit-content;
+      max-width: 75%;
+      background: rgba(184, 160, 120, 0.09);
+      border: 1px dashed rgba(184, 160, 120, 0.3);
+      color: var(--mist);
+      font-size: 0.84rem;
+    }
+
+    .thinking-dots {
+      display: inline-flex;
+      gap: 0.2rem;
+      align-items: center;
+    }
+
+    .thinking-dots i {
+      width: 0.32rem;
+      height: 0.32rem;
+      border-radius: 50%;
+      background: var(--gold-bright);
+      opacity: 0.35;
+      animation: thinkingPulse 1s infinite ease-in-out;
+    }
+
+    .thinking-dots i:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .thinking-dots i:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes thinkingPulse {
+      0%, 80%, 100% {
+        transform: translateY(0);
+        opacity: 0.35;
+      }
+      40% {
+        transform: translateY(-2px);
+        opacity: 1;
+      }
+    }
+
     .assistant-form {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -956,6 +1002,20 @@
         saveHistory();
       }
 
+      function showThinking() {
+        var box = document.createElement("div");
+        box.className = "msg ai thinking";
+        box.id = "thinking-msg";
+        box.innerHTML = "正在思考 <span class=\"thinking-dots\"><i></i><i></i><i></i></span>";
+        messages.appendChild(box);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      function hideThinking() {
+        var box = document.getElementById("thinking-msg");
+        if (box && box.parentNode) box.parentNode.removeChild(box);
+      }
+
       function localFallback(question) {
         var q = question.toLowerCase();
         if (q.indexOf("价格") > -1 || q.indexOf("报价") > -1) {
@@ -1042,12 +1102,15 @@
         input.value = "";
         addMessage("user", question, false);
         setStatus("thinking");
+        showThinking();
         try {
           var isReady = AI_CONFIG.apiKey && AI_CONFIG.model;
           var answer = isReady ? await askRemote(question) : localFallback(question);
+          hideThinking();
           await typeAiMessage(answer);
           setStatus(isReady ? "online" : "demo");
         } catch (_err) {
+          hideThinking();
           await typeAiMessage("当前网络接口不可用，已切换为本地演示回答。");
           await typeAiMessage(localFallback(question));
           setStatus("fallback");
