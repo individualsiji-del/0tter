@@ -458,59 +458,6 @@
       justify-items: end;
     }
 
-    .live2d-shell {
-      width: 190px;
-      height: 250px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(27, 24, 22, 0.95), rgba(12, 11, 10, 0.95));
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(5px);
-    }
-
-    #live2d-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .live2d-bubble {
-      position: absolute;
-      left: -220px;
-      bottom: 105px;
-      max-width: 205px;
-      background: rgba(18, 16, 14, 0.95);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 0.55rem 0.65rem;
-      color: var(--paper);
-      font-size: 0.78rem;
-      line-height: 1.35;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-      pointer-events: none;
-    }
-
-    .live2d-bubble.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .live2d-bubble::after {
-      content: "";
-      position: absolute;
-      right: -8px;
-      bottom: 12px;
-      width: 12px;
-      height: 12px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: rgba(18, 16, 14, 0.95);
-      transform: rotate(-45deg);
-    }
-
     .chat-toggle {
       border: 1px solid var(--line);
       background: rgba(17, 15, 14, 0.92);
@@ -677,15 +624,6 @@
         right: 0.7rem;
         bottom: 0.7rem;
       }
-      .live2d-shell {
-        width: 150px;
-        height: 200px;
-      }
-      .live2d-bubble {
-        left: -184px;
-        bottom: 86px;
-        max-width: 170px;
-      }
     }
   </style>
 </head>
@@ -795,10 +733,6 @@
   </main>
 
   <aside class="ai-dock" aria-label="AI assistant">
-    <div class="live2d-shell">
-      <div class="live2d-bubble" id="live2d-bubble"></div>
-      <canvas id="live2d-canvas" width="380" height="500"></canvas>
-    </div>
     <button class="chat-toggle" type="button" id="chat-toggle">AI 助手</button>
     <section class="assistant-panel" id="assistant-panel" aria-live="polite">
       <div class="assistant-head">
@@ -836,71 +770,13 @@
       els.forEach(function (el) { io.observe(el); });
     })();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script>
-  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/index.min.js"></script>
   <script>
     window.AI_ASSISTANT_CONFIG = Object.assign({
       endpoint: "https://ark.cn-beijing.volces.com/api/v3/responses",
       apiKey: "f1e4c24e-2d8e-4459-a350-5ad9bd2ef246",
       model: "doubao-seed-1-8-251228",
-      systemPrompt: "你是 Atelier 网站的中文礼貌顾问，回答简洁、实用。",
-      live2dModelUrl: "./177426211658411.model3.json"
+      systemPrompt: "你是 Atelier 网站的中文礼貌顾问，回答简洁、实用。"
     }, window.AI_ASSISTANT_CONFIG || {});
-  </script>
-  <script>
-    (function () {
-      var modelUrl = (window.AI_ASSISTANT_CONFIG && window.AI_ASSISTANT_CONFIG.live2dModelUrl)
-        || "https://unpkg.com/live2d-widget-model-hijiki/assets/hijiki.model.json";
-      var fallbackModelUrl = "https://unpkg.com/live2d-widget-model-hijiki/assets/hijiki.model.json";
-      var canvas = document.getElementById("live2d-canvas");
-      var bubble = document.getElementById("live2d-bubble");
-      if (!(window.PIXI && window.PIXI.live2d && canvas)) return;
-      if (!window.Live2DCubismCore && bubble) {
-        bubble.textContent = "Live2D Core 未加载成功，已阻止模型渲染。";
-        bubble.classList.add("show");
-      }
-
-      var app = new PIXI.Application({
-        view: canvas,
-        autoStart: true,
-        resizeTo: canvas.parentElement,
-        transparent: true,
-        antialias: true
-      });
-
-      function mountModel(model) {
-        app.stage.addChild(model);
-        var sx = canvas.clientWidth / model.width;
-        var sy = canvas.clientHeight / model.height;
-        var scale = Math.min(sx, sy) * 0.95;
-        model.scale.set(scale);
-        model.x = canvas.clientWidth * 0.5;
-        model.y = canvas.clientHeight * 0.98;
-        model.anchor.set(0.5, 1);
-        model.interactive = true;
-        model.on("pointerdown", function () {
-          if (model.motion) model.motion("tap_body");
-        });
-        window.__LIVE2D_MODEL__ = model;
-      }
-
-      PIXI.live2d.Live2DModel.from(modelUrl).then(function (model) {
-        mountModel(model);
-      }).catch(function () {
-        PIXI.live2d.Live2DModel.from(fallbackModelUrl).then(function (model) {
-          mountModel(model);
-        }).catch(function () {
-          canvas.style.opacity = "0.25";
-          if (bubble) {
-            bubble.textContent = window.location.protocol === "file:"
-              ? "检测到 file:// 打开。请用本地服务器访问该页面（如 python -m http.server）。"
-              : "Live2D 资源加载失败，请检查 model3.json、moc3 和贴图路径。";
-            bubble.classList.add("show");
-          }
-        });
-      });
-    })();
   </script>
   <script>
     (function () {
@@ -911,7 +787,6 @@
       var input = document.getElementById("assistant-input");
       var messages = document.getElementById("assistant-messages");
       var statusNode = document.getElementById("assistant-status");
-      var bubble = document.getElementById("live2d-bubble");
 
       var AI_CONFIG = window.AI_ASSISTANT_CONFIG || {
         endpoint: "https://ark.cn-beijing.volces.com/api/v3/responses",
@@ -922,41 +797,6 @@
 
       function setStatus(text) {
         statusNode.textContent = text;
-      }
-
-      function setMouth(value) {
-        var model = window.__LIVE2D_MODEL__;
-        if (!model || !model.internalModel || !model.internalModel.coreModel) return;
-        var core = model.internalModel.coreModel;
-        var paramIds = ["ParamMouthOpenY", "PARAM_MOUTH_OPEN_Y"];
-        for (var i = 0; i < paramIds.length; i++) {
-          try {
-            core.setParameterValueById(paramIds[i], value);
-          } catch (_err) {}
-        }
-      }
-
-      function talkPulse(ms) {
-        var startedAt = Date.now();
-        var t = setInterval(function () {
-          var elapsed = Date.now() - startedAt;
-          if (elapsed > ms) {
-            clearInterval(t);
-            setMouth(0);
-            return;
-          }
-          setMouth((elapsed % 240 < 120) ? 0.85 : 0.1);
-        }, 60);
-      }
-
-      function showBubble(text, ttl) {
-        if (!bubble) return;
-        bubble.textContent = text;
-        bubble.classList.add("show");
-        window.clearTimeout(showBubble._timer);
-        showBubble._timer = window.setTimeout(function () {
-          bubble.classList.remove("show");
-        }, ttl || 2600);
       }
 
       function saveHistory() {
@@ -995,10 +835,6 @@
         div.textContent = text;
         messages.appendChild(div);
         messages.scrollTop = messages.scrollHeight;
-        if (withEffects !== false && role === "ai") {
-          showBubble(text, 2800);
-          talkPulse(Math.max(900, Math.min(3600, text.length * 55)));
-        }
         saveHistory();
       }
 
@@ -1076,17 +912,11 @@
         div.className = "msg ai";
         messages.appendChild(div);
         messages.scrollTop = messages.scrollHeight;
-        showBubble("正在回答...", 1600);
         for (var i = 0; i < text.length; i++) {
           div.textContent += text.charAt(i);
-          if (i % 2 === 0) {
-            setMouth((i % 4 === 0) ? 0.9 : 0.2);
-          }
           messages.scrollTop = messages.scrollHeight;
           await new Promise(function (r) { setTimeout(r, 18); });
         }
-        setMouth(0);
-        showBubble(text, 3000);
         saveHistory();
       }
 
